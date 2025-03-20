@@ -1,5 +1,15 @@
-{% for category in categories %}
-<li>category.name</li>
-<li>category.description</li>
-<br>
-{%endfor%}
+<table border="1">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Actions</th>
+  </tr>
+  {% for category in categories%}
+  <tr>
+    <td>{{ category.name }}</td>
+    <td>{{ category.description }}</td>
+    <td><a href="{% url 'update_category' category.id %}">Edit</a>
+    <a href="{% url 'delete_category' category.id  %}">Delete</a></td>
+  </tr>
+  {%endfor%}
+</table>

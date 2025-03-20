@@ -1,0 +1,43 @@
+<div class="product-container">
+  <h1 class="product-name">{{product.name}}</h1>
+  <p class="product-category">Category: {{product.category}}</p>
+  <img src="{{product.image.url}}" alt="{{product.name}}" class="product-image">
+  <p class="product-description">{{product.description}}</p>
+  <div class="product-info">
+    <p class="stock">Stock: {{product.stock}}</p>
+    <p class="price">Price: ${{product.price}}</p>
+  </div>
+</div>
+
+<style>
+  .product-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .product-name {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  .product-category {
+    color: #666;
+    margin-bottom: 15px;
+    font-style: italic;
+  }
+  .product-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+  }
+  .product-description {
+    color: #666;
+    line-height: 1.6;
+  }
+  .product-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+</style>

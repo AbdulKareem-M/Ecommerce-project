@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import User
 from django.views.generic import View
 from .forms import UserRegistrationForm,LoginForm
 from django.contrib.auth import authenticate,login
+from django.core.mail import send_mail
 
 
 class UserRegistration(View):
@@ -16,12 +17,21 @@ class UserRegistration(View):
   def post(self,request):
 
     form=UserRegistrationForm(request.POST)
+    
     if form.is_valid():
       User.objects.create_user(**form.cleaned_data)
-
-      form=UserRegistrationForm
       
-      return render(request,"register.html",{"form":form})       
+      subject = 'welcome mail'
+      
+      message = 'Hi, welcome to my Application'
+      
+      from_email = 'abdulkareemyousaf1245@gmail.com'
+      
+      recipient_list = [form.cleaned_data.get('email')]
+      
+      send_mail(subject, message, from_email, recipient_list, fail_silently=True)
+      
+      return redirect("login")       
     
 
 class UserLogin(View):
@@ -45,7 +55,7 @@ class UserLogin(View):
         
         login(request,user)
         
-        return render(request,"home.html",{"form":form})
+        return redirect("home.html")
       
       
       else:
