@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<h2>Complete Your Payment</h2>
+
+<form id="payment-form" method="POST" action="{{ callback_url }}">
+  {% csrf_token %}
+
+  <script
+    src="https://checkout.razorpay.com/v1/checkout.js"
+    data-key="{{ razorpay_key }}"
+    data-amount="{{ amount }}"
+    data-currency="INR"
+    data-order_id="{{ summary.order_id }}"
+    data-buttontext="Pay Now"
+    data-name="Test Shop"
+    data-description="Payment for your order"
+    data-image="/static/logo.png"
+    data-prefill.name="{{ request.user.username }}"
+    data-theme.color="#0b5ed7">
+  </script>
+
+  <!-- Razorpay renders its own button, so no need for manual submit -->
+</form>
+{% endblock %}

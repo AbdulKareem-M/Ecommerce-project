@@ -1,73 +1,65 @@
 from django.shortcuts import render, redirect
-from .models import User
-from django.views.generic import View
-from .forms import UserRegistrationForm,LoginForm
-from django.contrib.auth import authenticate,login
+from django.views import View
+from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 
+from .models import User
+from .forms import UserRegistrationForm, LoginForm
+from product.models import Cart
 
-class UserRegistration(View):
 
-  def get(self,request):
+class UserRegistrationView(View):
+    """Handles user registration and cart creation."""
 
-      form=UserRegistrationForm()
+    def get(self, request):
+        form = UserRegistrationForm()
+        return render(request, "register.html", {"form": form})
 
-      return render(request,"register.html",{"form":form})
-    
-  def post(self,request):
+    def post(self, request):
+        form = UserRegistrationForm(request.POST)
 
-    form=UserRegistrationForm(request.POST)
-    
-    if form.is_valid():
-      User.objects.create_user(**form.cleaned_data)
-      
-      subject = 'welcome mail'
-      
-      message = 'Hi, welcome to my Application'
-      
-      from_email = 'abdulkareemyousaf1245@gmail.com'
-      
-      recipient_list = [form.cleaned_data.get('email')]
-      
-      send_mail(subject, message, from_email, recipient_list, fail_silently=True)
-      
-      return redirect("login")       
-    
+        if form.is_valid():
+            # Create user and corresponding empty cart
+            user = User.objects.create_user(**form.cleaned_data)
+            Cart.objects.create(user=user)
 
-class UserLogin(View):
+            # Send welcome email
+            send_mail(
+                subject='Welcome to Our Platform',
+                message='Hi, welcome to our application!',
+                from_email='abdulkareemyousaf1245@gmail.com',
+                recipient_list=[form.cleaned_data.get('email')],
+                fail_silently=True
+            )
 
-  def get(self,request):
+            return redirect("login")
 
-    form=LoginForm()
+        return render(request, "register.html", {"form": form})
 
-    return render(request,"login.html",{"form":form})
-    
-  def post(self,request):
 
-    form=LoginForm(request.POST)
+class UserLoginView(View):
+    """Handles user login."""
 
-    if form.is_valid():
-      username=form.cleaned_data.get("username")
-      password=form.cleaned_data.get("password")
-      user=authenticate(request,username=username,password=password)
+    def get(self, request):
+        form = LoginForm()
+        return render(request, "login.html", {"form": form})
 
-      if user:
-        
-        login(request,user)
-        
-        return redirect("home.html")
-      
-      
-      else:
-        
-        form = LoginForm()    
-        
-        return render(request,"login.html",{"form":form})
-            
+    def post(self, request):
+        form = LoginForm(request.POST)
 
-                
-            
-            
-              
-              
-              
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, username=username, password=password)
+
+            if user:
+                login(request, user)
+                return redirect("home")
+
+        return render(request, "login.html", {"form": form})
+
+
+def logout_view(request):
+    """Logs out the user and redirects to login page."""
+    logout(request)
+    return redirect("login")
