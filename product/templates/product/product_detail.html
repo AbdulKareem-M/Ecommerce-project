@@ -1,16 +1,31 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}{{ product.name }}{% endblock %}
 {% block content %}
-<div class="product-detail">
-  <img src="{{ product.image.url }}" alt="{{ product.name }}">
-  <div class="info">
-    <h2>{{ product.name }}</h2>
-    <p>{{ product.description }}</p>
-    <p class="price">₹{{ product.price }}</p>
-    <form method="post" action="{% url 'add_to_cart' product.id %}">
-      {% csrf_token %}
-      <button type="submit" class="btn">Add to Cart</button>
-    </form>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+    </div>
+    <div class="col-md-6">
+      <h2>{{ product.name }}</h2>
+      <p>{{ product.description }}</p>
+      <h4>₹{{ product.price }}</h4>
+      <form method="post" action="{% url 'add_to_cart' product.id %}">
+        {% csrf_token %}
+        <button class="btn btn-success">Add to Cart</button>
+      </form>
+    </div>
   </div>
+  <hr>
+  <h5>Reviews</h5>
+  {% for review in reviews %}
+    <div class="mb-2">
+      <strong>{{ review.user.username }}</strong> - {{ review.rating }}/5<br>
+      <p>{{ review.comment }}</p>
+    </div>
+  {% empty %}
+    <p>No reviews yet.</p>
+  {% endfor %}
+  <a href="{% url 'add_review' product.id %}" class="btn btn-outline-primary mt-3">Add Review</a>
 </div>
 {% endblock %}
