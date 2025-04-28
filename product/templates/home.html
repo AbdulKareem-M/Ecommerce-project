@@ -1,99 +1,544 @@
 {% extends 'base.html' %}
-{% block title %}Welcome to ShopEase{% endblock %}
+{% block title %}ShopEase - Your Ultimate Shopping Destination{% endblock %}
 
 {% block content %}
-
-<!-- Hero Section with Background Image -->
-<div class="position-relative mb-4 rounded-3 shadow-sm overflow-hidden"
-     style="background: #333 url('/static/images/hero-bg.jpg') no-repeat center center; background-size: cover; height: 100vh;">
-  <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 0, 0, 0.5);"></div>
-  <div class="container py-5 text-center position-relative z-2 d-flex flex-column justify-content-center align-items-center h-100">
-    <h1 class="fw-bold text-white fs-1 fs-md-2 fs-lg-3">Welcome to ShopEase</h1>
-    <p class="lead text-white">Shop the best products at unbeatable prices. Fast delivery, secure checkout.</p>
-    <a href="{% url 'home' %}" class="btn btn-lg btn-primary">Shop Now</a>
+<!-- Hero Section with Modern Design -->
+<section class="hero-section position-relative rounded-4 shadow-sm overflow-hidden mb-5">
+  <div class="position-absolute top-0 start-0 w-100 h-100" 
+       style="background: linear-gradient(135deg, rgba(106, 13, 173, 0.85), rgba(255, 165, 0, 0.85)), url('/static/images/hero-bg.jpg') no-repeat center center; background-size: cover;"></div>
+  
+  <div class="container py-5 position-relative z-2">
+    <div class="row min-vh-75 align-items-center">
+      <div class="col-lg-6 py-5 text-white">
+        <h1 class="display-4 fw-bold mb-3">Discover the Perfect Shopping Experience</h1>
+        <p class="lead mb-4">Premium products, exclusive deals, and lightning-fast delivery right to your doorstep.</p>
+        <div class="d-flex gap-3">
+          <a href="#featured-products" class="btn btn-lg px-4" style="background-color: var(--accent-color); color: white; font-weight: 600;">
+            Shop Now <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+          <a href="#categories" class="btn btn-lg btn-outline-light px-4">Browse Categories</a>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- Benefits Section -->
+<section class="mb-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card border-0 bg-light h-100 text-center p-3">
+          <div class="py-3">
+            <i class="fas fa-truck fa-2x" style="color: var(--primary-color);"></i>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Free Shipping</h5>
+            <p class="card-text small text-muted">On orders over ₹499</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 bg-light h-100 text-center p-3">
+          <div class="py-3">
+            <i class="fas fa-undo fa-2x" style="color: var(--primary-color);"></i>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Easy Returns</h5>
+            <p class="card-text small text-muted">30-day return policy</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 bg-light h-100 text-center p-3">
+          <div class="py-3">
+            <i class="fas fa-headset fa-2x" style="color: var(--primary-color);"></i>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">24/7 Support</h5>
+            <p class="card-text small text-muted">Always here to help</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 bg-light h-100 text-center p-3">
+          <div class="py-3">
+            <i class="fas fa-shield-alt fa-2x" style="color: var(--primary-color);"></i>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Secure Payment</h5>
+            <p class="card-text small text-muted">100% secure checkout</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Featured Categories -->
-<h2 class="text-center mb-4">Featured Categories</h2>
-<div class="row text-center mb-5">
-  {% for category in categories %}
-    <div class="col-md-3 mb-4">
-      <div class="card h-100 shadow-sm text-white" style="background-image: url('{{ category.image.url }}'); background-size: cover; background-position: center;">
-        <div class="card-body bg-dark bg-opacity-50">
-          <h5 class="card-title">{{ category.name }}</h5>
-          <a href="{% url 'category_detail' category.pk %}" class="btn btn-light btn-sm mt-2">Explore</a>
+<section id="categories" class="mb-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold m-0">Shop by Category</h2>
+      <a href="#" class="text-decoration-none" style="color: var(--primary-color);">
+        View All <i class="fas fa-angle-right ms-1"></i>
+      </a>
+    </div>
+    
+    <div class="row g-4">
+      {% for category in categories %}
+        <div class="col-6 col-md-3">
+          <div class="card category-card border-0 rounded-4 shadow-sm h-100 overflow-hidden">
+            <div class="position-relative">
+              <img src="{{ category.image.url }}" class="card-img" alt="{{ category.name }}" 
+                   style="height: 180px; object-fit: cover;">
+              <div class="position-absolute top-0 start-0 w-100 h-100" 
+                   style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6));"></div>
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <h5 class="text-white mb-0">{{ category.name }}</h5>
+              </div>
+            </div>
+            <div class="card-footer bg-white text-center border-0">
+              <a href="{% url 'category_detail' category.pk %}" class="btn btn-sm fw-medium" 
+                 style="color: var(--primary-color);">
+                Explore Collection <i class="fas fa-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Deal of the Day -->
+<section class="mb-5 py-4" style="background-color: #f8f4ff;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <span class="badge mb-2" style="background-color: var(--accent-color);">DEAL OF THE DAY</span>
+        <h2 class="fw-bold mb-3">Special Offers Just For You</h2>
+        <p class="mb-4">Limited time offers with incredible savings. Don't miss out on these exclusive deals.</p>
+        
+        <div class="d-flex gap-3 mb-4">
+          <div class="text-center">
+            <div class="bg-white rounded-3 shadow-sm p-3 mb-2">
+              <span class="fw-bold" style="color: var(--primary-color);">02</span>
+            </div>
+            <small>Days</small>
+          </div>
+          <div class="text-center">
+            <div class="bg-white rounded-3 shadow-sm p-3 mb-2">
+              <span class="fw-bold" style="color: var(--primary-color);">18</span>
+            </div>
+            <small>Hours</small>
+          </div>
+          <div class="text-center">
+            <div class="bg-white rounded-3 shadow-sm p-3 mb-2">
+              <span class="fw-bold" style="color: var(--primary-color);">45</span>
+            </div>
+            <small>Mins</small>
+          </div>
+          <div class="text-center">
+            <div class="bg-white rounded-3 shadow-sm p-3 mb-2">
+              <span class="fw-bold" style="color: var(--primary-color);">22</span>
+            </div>
+            <small>Secs</small>
+          </div>
+        </div>
+        
+        <a href="#" class="btn px-4" style="background-color: var(--accent-color); color: white;">
+          Shop Now <i class="fas fa-bolt ms-1"></i>
+        </a>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border-0 rounded-4 shadow overflow-hidden">
+          {% if top_deals.0.image %}
+            <img src="{{ top_deals.0.image.url }}" class="card-img-top" alt="{{ top_deals.0.name }}">
+          {% else %}
+            <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Deal of the day">
+          {% endif %}
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title fw-bold mb-0">{{ top_deals.0.name }}</h5>
+              <span class="badge bg-danger">45% OFF</span>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <div class="me-2">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star-half-alt text-warning"></i>
+              </div>
+              <small class="text-muted">(24 reviews)</small>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <span class="text-decoration-line-through text-muted me-2">₹{{ top_deals.0.price|add:500 }}</span>
+                <span class="fw-bold fs-5" style="color: var(--primary-color);">₹{{ top_deals.0.price }}</span>
+              </div>
+              <a href="{% url 'product_detail' top_deals.0.pk %}" class="btn" 
+                 style="background-color: var(--primary-color); color: white;">View Details</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  {% endfor %}
-</div>
-
+  </div>
+</section>
 
 <!-- Top Deals -->
-<h2 class="text-center mb-4">Top Deals</h2>
-<div class="row">
-  {% for product in top_deals %}
-    <div class="col-md-3 mb-4">
-      <div class="card h-100 shadow-sm">
-        {% if product.image %}
-          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text fw-semibold">₹{{ product.price }}</p>
-          <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm btn-primary">View</a>
+<section id="featured-products" class="mb-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold m-0">Featured Products</h2>
+      <div class="d-flex">
+        <button class="btn btn-sm btn-outline-secondary me-2" id="prev-products">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" id="next-products">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      {% for product in top_deals %}
+        <div class="col">
+          <div class="card h-100 border-0 shadow-sm product-card">
+            <div class="position-relative">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" 
+                     style="height: 200px; object-fit: cover;">
+              {% else %}
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="{{ product.name }}" 
+                     style="height: 200px; object-fit: cover;">
+              {% endif %}
+              
+              <span class="position-absolute top-0 end-0 bg-danger text-white m-2 px-2 py-1 rounded-pill small">
+                Hot Deal
+              </span>
+              
+              <div class="product-actions position-absolute top-0 start-0 m-2 d-flex flex-column gap-2">
+                <button class="btn btn-sm btn-light rounded-circle shadow-sm" title="Add to wishlist">
+                  <i class="far fa-heart"></i>
+                </button>
+                <button class="btn btn-sm btn-light rounded-circle shadow-sm" title="Quick view">
+                  <i class="far fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="card-body p-3">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h6 class="card-title mb-0">{{ product.name }}</h6>
+                <div>
+                  <i class="fas fa-star text-warning small"></i>
+                  <span class="small">4.5</span>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold" style="color: var(--primary-color);">₹{{ product.price }}</span>
+                <form method="post" action="{% url 'add_to_cart' pk=product.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm rounded-pill" 
+                          style="background-color: var(--accent-color); color: white;">
+                    <i class="fas fa-cart-plus me-1"></i> Add
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+            <div class="card-footer bg-white border-0 p-3 pt-0 text-center">
+              <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none" 
+                 style="color: var(--primary-color);">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-5 mb-4" style="background-color: #f8f4ff;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge mb-2" style="background-color: var(--primary-color); color: white;">TESTIMONIALS</span>
+      <h2 class="fw-bold">What Our Customers Say</h2>
+      <p class="text-muted">Hear from our satisfied customers about their shopping experience</p>
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                  <div class="d-flex justify-content-between mb-4">
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                           style="width: 50px; height: 50px; background-color: var(--primary-color) !important;">
+                        <span class="text-white fw-bold">AM</span>
+                      </div>
+                      <div>
+                        <h6 class="mb-0">Akhil M.</h6>
+                        <small class="text-muted">Loyal Customer</small>
+                      </div>
+                    </div>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                  <p class="lead mb-0">
+                    <i class="fas fa-quote-left me-2" style="color: var(--secondary-color);"></i>
+                    Amazing service and great products! The delivery was faster than expected and the product quality exceeded my expectations. Highly recommend shopping from ShopEase!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                  <div class="d-flex justify-content-between mb-4">
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                           style="width: 50px; height: 50px; background-color: var(--primary-color) !important;">
+                        <span class="text-white fw-bold">NR</span>
+                      </div>
+                      <div>
+                        <h6 class="mb-0">Nivya R.</h6>
+                        <small class="text-muted">New Customer</small>
+                      </div>
+                    </div>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star-half-alt"></i>
+                    </div>
+                  </div>
+                  <p class="lead mb-0">
+                    <i class="fas fa-quote-left me-2" style="color: var(--secondary-color);"></i>
+                    Fast delivery and great support. I had a question about my order and the customer service team was extremely helpful and responsive!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                  <div class="d-flex justify-content-between mb-4">
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                           style="width: 50px; height: 50px; background-color: var(--primary-color) !important;">
+                        <span class="text-white fw-bold">RP</span>
+                      </div>
+                      <div>
+                        <h6 class="mb-0">Rahul P.</h6>
+                        <small class="text-muted">Frequent Shopper</small>
+                      </div>
+                    </div>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                  <p class="lead mb-0">
+                    <i class="fas fa-quote-left me-2" style="color: var(--secondary-color);"></i>
+                    I love the discounts and product variety. ShopEase has become my go-to online store for all my shopping needs. The weekly deals are unbeatable!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-sm btn-outline-secondary mx-1 rounded-circle" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1">1</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary mx-1 rounded-circle" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Slide 2">2</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary mx-1 rounded-circle" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Slide 3">3</button>
+          </div>
         </div>
       </div>
     </div>
-  {% endfor %}
-</div>
-
-<!-- Testimonials Carousel -->
-<h2 class="text-center my-5">What Our Customers Say</h2>
-<div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <blockquote class="blockquote text-center">
-        <p>"Amazing service and great products!"</p>
-        <footer class="blockquote-footer">Akhil M.</footer>
-      </blockquote>
-    </div>
-    <div class="carousel-item">
-      <blockquote class="blockquote text-center">
-        <p>"Fast delivery and great support."</p>
-        <footer class="blockquote-footer">Nivya R.</footer>
-      </blockquote>
-    </div>
-    <div class="carousel-item">
-      <blockquote class="blockquote text-center">
-        <p>"I love the discounts and product variety."</p>
-        <footer class="blockquote-footer">Rahul P.</footer>
-      </blockquote>
-    </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
+</section>
 
-<!-- Newsletter Subscription -->
-<div class="bg-primary text-white text-center py-5 mt-5">
+<!-- Featured Brands -->
+<section class="mb-5">
   <div class="container">
-    <h4 class="mb-3">Stay Updated with ShopEase!</h4>
-    <form class="row justify-content-center">
-      <div class="col-md-4">
-        <input type="email" class="form-control rounded-pill" placeholder="Enter your email">
-      </div>
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-light rounded-pill">Subscribe</button>
-      </div>
-    </form>
+    <h2 class="fw-bold text-center mb-4">Featured Brands</h2>
+    <div class="row row-cols-2 row-cols-md-6 g-4 justify-content-center">
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center justify-content-center p-4">
+              <img src="static/images/boat.png" class="img-fluid" alt="Brand logo">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center justify-content-center p-4">
+              <img src="static/images/samsung.png" class="img-fluid" alt="Brand logo">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center justify-content-center p-4">
+              <img src="static/images/haldirams.png" class="img-fluid" alt="Brand logo">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center justify-content-center p-4">
+              <img src="static/images/sony.png" class="img-fluid" alt="Brand logo">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center justify-content-center p-4">
+              <img src="static/images/adidas.png" class="img-fluid" alt="Brand logo">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center justify-content-center p-4">
+              <img src="static/images/pepsi.png" class="img-fluid" alt="Brand logo">
+            </div>
+          </div>
+        </div>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- App Banner -->
+<section class="mb-5">
+  <div class="container">
+    <div class="card border-0 rounded-4 overflow-hidden shadow">
+      <div class="row g-0">
+        <div class="col-md-6 p-5 d-flex align-items-center" style="background-color: #f8f4ff;">
+          <div>
+            <h3 class="fw-bold mb-3">Download Our Mobile App</h3>
+            <p class="mb-4">Get exclusive app-only deals and shop on the go. Faster checkout, personalized recommendations, and more!</p>
+            <div class="d-flex gap-2">
+              <a href="#" class="btn btn-dark px-3">
+                <i class="fab fa-apple me-2"></i> App Store
+              </a>
+              <a href="#" class="btn btn-dark px-3">
+                <i class="fab fa-google-play me-2"></i> Play Store
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 d-none d-md-block">
+          <img src="static/images/mobile-app.jpg" class="img-fluid h-100" style="object-fit: cover;" alt="Mobile app">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blog Posts -->
+<section class="mb-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold m-0">From Our Blog</h2>
+      <a href="#" class="text-decoration-none" style="color: var(--primary-color);">
+        View All Posts <i class="fas fa-angle-right ms-1"></i>
+      </a>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <span class="badge me-2" style="background-color: var(--primary-color);">Shopping</span>
+              <small class="text-muted">April 15, 2025</small>
+            </div>
+            <h5 class="card-title fw-bold">10 Summer Fashion Trends You Need to Know</h5>
+            <p class="card-text">Discover the hottest fashion trends for this summer season and how to style them.</p>
+          </div>
+          <div class="card-footer bg-white border-0">
+            <a href="#" class="text-decoration-none" style="color: var(--primary-color);">
+              Read More <i class="fas fa-long-arrow-alt-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Blog post">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <span class="badge me-2" style="background-color: var(--primary-color);">Electronics</span>
+              <small class="text-muted">April 10, 2025</small>
+            </div>
+            <h5 class="card-title fw-bold">Best Budget-Friendly Tech Gadgets of 2025</h5>
+            <p class="card-text">Find out which affordable tech gadgets offer the best value for money this year.</p>
+          </div>
+          <div class="card-footer bg-white border-0">
+            <a href="#" class="text-decoration-none" style="color: var(--primary-color);">
+              Read More <i class="fas fa-long-arrow-alt-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Blog post">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <span class="badge me-2" style="background-color: var(--primary-color);">Home</span>
+              <small class="text-muted">April 5, 2025</small>
+            </div>
+            <h5 class="card-title fw-bold">5 Easy Home Decor Ideas to Transform Your Space</h5>
+            <p class="card-text">Simple and affordable ways to give your home a fresh new look this season.</p>
+          </div>
+          <div class="card-footer bg-white border-0">
+            <a href="#" class="text-decoration-none" style="color: var(--primary-color);">
+              Read More <i class="fas fa-long-arrow-alt-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Add hover effect to product cards
+  document.addEventListener('DOMContentLoaded', function() {
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.classList.add('shadow');
+        card.style.transform = 'translateY(-5px)';
+        card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('shadow');
+        card.style.transform = 'translateY(0)';
+      });
+    });
+  });
+</script>
 {% endblock %}

@@ -2,25 +2,61 @@
 {% block title %}Payment{% endblock %}
 
 {% block content %}
-<h2>Complete Your Payment</h2>
+<style>
+  .payment-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
 
-<form id="payment-form" method="POST" action="{{ callback_url }}">
-  {% csrf_token %}
+  h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
 
-  <script
-    src="https://checkout.razorpay.com/v1/checkout.js"
-    data-key="{{ razorpay_key }}"
-    data-amount="{{ amount }}"
-    data-currency="INR"
-    data-order_id="{{ summary.order_id }}"
-    data-buttontext="Pay Now"
-    data-name="Test Shop"
-    data-description="Payment for your order"
-    data-image="/static/logo.png"
-    data-prefill.name="{{ request.user.username }}"
-    data-theme.color="#0b5ed7">
-  </script>
+  #payment-form {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
 
-  <!-- Razorpay renders its own button, so no need for manual submit -->
-</form>
+  .razorpay-payment-button {
+    background-color: #0b5ed7;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .razorpay-payment-button:hover {
+    background-color: #0a4db6;
+  }
+</style>
+
+<div class="payment-container">
+  <h2>Complete Your Payment</h2>
+
+  <form id="payment-form" method="POST" action="{{ callback_url }}">
+    {% csrf_token %}
+
+    <script
+      src="https://checkout.razorpay.com/v1/checkout.js"
+      data-key="{{ razorpay_key }}"
+      data-amount="{{ amount }}"
+      data-currency="INR"
+      data-order_id="{{ summary.order_id }}"
+      data-buttontext="Pay Now"
+      data-name="Test Shop"
+      data-description="Payment for your order"
+      data-image="/static/logo.png"
+      data-prefill.name="{{ request.user.username }}"
+      data-theme.color="#0b5ed7">
+    </script>
+  </form>
+</div>
 {% endblock %}

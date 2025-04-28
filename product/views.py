@@ -146,7 +146,12 @@ class CartListView(View):
         cart, _ = Cart.objects.get_or_create(user=request.user)
         items = cart.cartitem_set.select_related('cart_item')
         c_items = [(item, item.cart_item.price * item.quantity) for item in items]
-        return render(request, 'cart.html', {'c_items': c_items})
+        total = sum(subtotal for _, subtotal in c_items)
+        return render(request, 'cart.html', {
+            'c_items': c_items,
+            'total': total,
+        })
+
 
 
 
@@ -174,4 +179,19 @@ class CartDeleteItemView(View):
     
     
 def base_view(request):
-    return render(request,'base.html')
+    categories = Category.objects.all()[:8]
+    top_deals = Product.objects.filter(stock__gt=0).order_by('-id')[:8]
+    cart_count = CartItem.objects.filter(user=request.user).count()
+    context = {
+        'categories': categories,
+        'top_deals': top_deals,
+        'cart_count': cart_count,
+    }
+    if request.user.is_authenticated:
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+        items = cart.cartitem_set.select_related('cart_item')
+        c_items = [(item, item.cart_item.price * item.quantity) for item in items]
+        context['c_items'] = c_items
+    else:
+        context['c_items'] = []
+    return render(request, 'base.html', context)
