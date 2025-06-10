@@ -1,45 +1,246 @@
-{% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Login - ShopEase{% endblock %}
+
 {% block content %}
-<div class="auth-form">
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
-  <a href="{%url 'register'%}">Sign up?</a>
+<div class="row justify-content-center">
+  <div class="col-lg-5 col-md-7">
+    <div class="card shadow-lg border-0" style="border-radius: 20px; overflow: hidden;">
+      <!-- Card Header with Gradient -->
+      <div class="card-header text-center py-4" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border: none;">
+        <h2 class="text-white mb-0 fw-bold">
+          <i class="fas fa-sign-in-alt me-2"></i>Welcome Back
+        </h2>
+        <p class="text-white-50 mt-2 mb-0">Sign in to your ShopEase account</p>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body p-5">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              <i class="fas fa-exclamation-circle me-2"></i>{{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+          
+          <!-- Username Field -->
+          <div class="mb-4">
+            <label for="{{ form.username.id_for_label }}" class="form-label fw-semibold">
+              <i class="fas fa-user me-2 text-muted"></i>Username
+            </label>
+            <input type="text" 
+                   class="form-control form-control-lg {% if form.username.errors %}is-invalid{% endif %}" 
+                   id="{{ form.username.id_for_label }}"
+                   name="{{ form.username.name }}"
+                   value="{{ form.username.value|default:'' }}"
+                   placeholder="Enter your username"
+                   style="border-radius: 12px; border: 2px solid #e9ecef; padding: 15px 20px;"
+                   required>
+            {% if form.username.errors %}
+              <div class="invalid-feedback">
+                {% for error in form.username.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Password Field -->
+          <div class="mb-4">
+            <label for="{{ form.password.id_for_label }}" class="form-label fw-semibold">
+              <i class="fas fa-lock me-2 text-muted"></i>Password
+            </label>
+            <div class="position-relative">
+              <input type="password" 
+                     class="form-control form-control-lg {% if form.password.errors %}is-invalid{% endif %}" 
+                     id="{{ form.password.id_for_label }}"
+                     name="{{ form.password.name }}"
+                     placeholder="Enter your password"
+                     style="border-radius: 12px; border: 2px solid #e9ecef; padding: 15px 50px 15px 20px;"
+                     required>
+              <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y me-3" 
+                      style="border: none; background: none; color: #6c757d;"
+                      onclick="togglePassword('{{ form.password.id_for_label }}', this)">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            {% if form.password.errors %}
+              <div class="invalid-feedback">
+                {% for error in form.password.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Remember Me and Forgot Password -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="remember_me" name="remember_me"
+                     style="border-radius: 4px; border: 2px solid #e9ecef;">
+              <label class="form-check-label text-muted" for="remember_me">
+                Remember me
+              </label>
+            </div>
+            <a href="#" class="text-decoration-none small" style="color: var(--primary-color);">
+              Forgot password?
+            </a>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-grid mb-4">
+            <button type="submit" class="btn btn-lg text-white fw-bold py-3" 
+                    style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+                           border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(106, 13, 173, 0.3);">
+              <i class="fas fa-sign-in-alt me-2"></i>Sign In
+            </button>
+          </div>
+
+          <!-- Divider -->
+          <div class="text-center mb-4">
+            <div class="d-flex align-items-center">
+              <hr class="flex-grow-1">
+              <span class="px-3 text-muted small">OR CONTINUE WITH</span>
+              <hr class="flex-grow-1">
+            </div>
+          </div>
+
+          <!-- Social Login Options -->
+          <div class="d-grid gap-2 mb-4">
+            <button type="button" class="btn btn-outline-dark btn-lg py-3" 
+                    style="border-radius: 12px; border: 2px solid #e9ecef;">
+              <i class="fab fa-google me-2" style="color: #db4437;"></i>
+              Sign in with Google
+            </button>
+            <button type="button" class="btn btn-outline-dark btn-lg py-3" 
+                    style="border-radius: 12px; border: 2px solid #e9ecef;">
+              <i class="fab fa-facebook-f me-2" style="color: #3b5998;"></i>
+              Sign in with Facebook
+            </button>
+          </div>
+        </form>
+
+        <!-- Register Link -->
+        <div class="text-center">
+          <p class="text-muted mb-0">
+            Don't have an account? 
+            <a href="{% url 'register' %}" class="text-decoration-none fw-semibold" 
+               style="color: var(--primary-color);">
+              Create one now
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Login Info -->
+    <div class="row mt-4 g-3">
+      <div class="col-md-6">
+        <div class="card border-0 bg-light h-100">
+          <div class="card-body text-center p-4">
+            <i class="fas fa-bolt fa-2x mb-3" style="color: var(--accent-color);"></i>
+            <h6 class="fw-bold mb-2">Quick Checkout</h6>
+            <small class="text-muted">Save your preferences and checkout faster</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card border-0 bg-light h-100">
+          <div class="card-body text-center p-4">
+            <i class="fas fa-heart fa-2x mb-3" style="color: var(--accent-color);"></i>
+            <h6 class="fw-bold mb-2">Wishlist</h6>
+            <small class="text-muted">Save items for later and get notified of deals</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card border-0 bg-light mt-4">
+      <div class="card-body text-center p-4">
+        <i class="fas fa-users fa-2x mb-3" style="color: var(--primary-color);"></i>
+        <h6 class="fw-bold mb-2">Join 50,000+ Happy Customers</h6>
+        <div class="d-flex justify-content-center align-items-center mt-3">
+          <div class="me-4">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <small class="text-muted ms-2">4.8/5 Rating</small>
+          </div>
+          <div>
+            <i class="fas fa-shipping-fast me-1" style="color: var(--accent-color);"></i>
+            <small class="text-muted">Free Shipping Available</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock %}
+
+<script>
+function togglePassword(inputId, button) {
+  const input = document.getElementById(inputId);
+  const icon = button.querySelector('i');
+  
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.remove('fa-eye');
+    icon.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.remove('fa-eye-slash');
+    icon.classList.add('fa-eye');
+  }
+}
+
+// Add some interactive animations
+document.addEventListener('DOMContentLoaded', function() {
+  const inputs = document.querySelectorAll('.form-control');
+  
+  inputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      this.style.transform = 'scale(1.02)';
+      this.style.transition = 'all 0.3s ease';
+    });
+    
+    input.addEventListener('blur', function() {
+      this.style.transform = 'scale(1)';
+    });
+  });
+});
+</script>
+
 <style>
-.auth-form {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+.form-control:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(106, 13, 173, 0.25) !important;
 }
 
-.auth-form h2 {
-  text-align: center;
-  margin-bottom: 20px;
+.form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 
-.auth-form form {
-  margin-bottom: 15px;
+.btn:hover {
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
 }
 
-.auth-form button {
-  width: 100%;
-  margin-top: 10px;
+.card {
+  transition: transform 0.3s ease;
 }
 
-.auth-form a {
-  display: block;
-  text-align: center;
-  margin-top: 10px;
-  color: #007bff;
-  text-decoration: none;
+.card:hover {
+  transform: translateY(-2px);
 }
-</style></style>
+
+.btn-outline-dark:hover {
+  background-color: #f8f9fa;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+</style>
+{% endblock %}
